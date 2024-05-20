@@ -1,8 +1,13 @@
 const BASE_URL = "https://steam-api-dot-cs-platform-306304.et.r.appspot.com";
+let q = "";
+let genres = "";
 
 async function getAllGames() {
   try {
-    const url = `${BASE_URL}/games?limit=30`;
+    let url = `${BASE_URL}/games?`;
+    if (q) url += `q=${q}&`;
+    if (genres) url += `genres=${genres}`;
+    console.log(url);
     const res = await fetch(url);
     const data = await res.json();
     console.log("data:", data);
@@ -11,7 +16,7 @@ async function getAllGames() {
     console.log("error:", error);
   }
 }
-// getAllGames();
+getAllGames();
 async function loadAllGames() {
   let loading = document.querySelector(".fui-loading-spinner-2");
   try {
@@ -40,19 +45,7 @@ async function loadAllGames() {
 }
 setTimeout(loadAllGames, 1000);
 
-// get Games base on category
-async function getGamesByGenres() {
-  try {
-    const url = `${BASE_URL}/genres?limit=30`;
-    const res = await fetch(url);
-    const data = await res.json();
-    console.log("data:", data);
-    return data;
-  } catch (error) {
-    console.log("error:", error);
-  }
-}
-getGamesByGenres();
+// get Games base on categor
 let btn = document.querySelectorAll(".btn");
 async function gameByGenres() {
   try {
@@ -85,6 +78,7 @@ async function gameByGenres() {
 btn.forEach((button) => {
   button.addEventListener("click", (e) => {
     genres = e.target.textContent.toLowerCase();
-    gameByGenres(genres);
+    console.log(genres);
+    loadAllGames();
   });
 });
